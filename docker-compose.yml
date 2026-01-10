@@ -1,0 +1,63 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongo:
+    image: mongo:7
+    container_name: sta-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - sta-network
+
+  # Mongo Express (Database UI - Optional but useful)
+  mongo-express:
+    image: mongo-express:latest
+    container_name: sta-mongo-express
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password123
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_URL: mongodb://admin:password123@mongo:27017/
+    depends_on:
+      - mongo
+    networks:
+      - sta-network
+
+  # Your Node.js API
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sta-api
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      MONGODB_URL: mongodb+srv://admin_123:SaraswatiAcademy_1234@cluster0.qksbi08.mongodb.net/
+      JWT_SECRET: saraswati_academy_secret_key
+      NODE_ENV: production
+      FRONTEND_URL: https://saraswatitallyacademy.in
+    depends_on:
+      - mongo
+    networks:
+      - sta-network
+    
+
+volumes:
+  mongo-data:
+
+networks:
+  sta-network:
+    driver: bridge
