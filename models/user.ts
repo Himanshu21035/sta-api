@@ -28,12 +28,14 @@ import { timeStamp } from "node:console";
 export interface User extends Document{
     userName:string;
     Password:string;
+    Role:string;
     comparePass(enteredPassword:string):Promise<Boolean>;
 };
 
 const userSchema=new Schema<User>({
     userName:{type:String, required:true, unique:true, lowercase: true},
-    Password:{type:String, required:true, minlength:6}
+    Password:{type:String, required:true, minlength:6},
+    Role:{type:String, required:true, default:"Manager"},
 }, {timestamps:true});
 
 userSchema.pre('save', async function(next){

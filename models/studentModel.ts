@@ -19,7 +19,8 @@ export interface student extends Document {
 	isCertified: boolean,
 	isCompleted:boolean,
 	isDeleted:boolean,
-	isFeesPending: boolean
+	isFeesPending: boolean, 
+	isActive?:boolean,
 };
 
 const studentSchema=new Schema<student>({
@@ -40,12 +41,13 @@ const studentSchema=new Schema<student>({
 		message:'DOB must be in the past'
 	}},
 	HighestQualification:{type:String, required:[true, 'Highest qualification is required'], trim :true},
-	Email:{type:String, required:[true, 'Email is required'], unique:true, match:[/^S+@\S+\.\S+$/, 'Invalid email format'], lowercase:true, trim:true},
+	Email:{type:String, required:[true, 'Email is required'], unique:true, match:[/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Invalid email format'], lowercase:true, trim:true},
 	Fees:{type:Number, required:true},
 	isCertified:{type:Boolean, default:false},
 	isCompleted:{type:Boolean, default:false},
 	isDeleted:{type:Boolean, default:false},
-	isFeesPending:{type:Boolean, default:true}
+	isFeesPending:{type:Boolean, default:true},
+	isActive:{type:Boolean, default: true}
 }, {timestamps:true});
 
 studentSchema.index({DateOfJoin:1, Course:1});
