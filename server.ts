@@ -31,7 +31,7 @@ app.use(cors({
   origin: [
     'http://localhost:4200',      // Angular dev
     'http://localhost:3000',      // Vite dev
-    'https://yourdomain.com'      // Production
+    'https://saraswatitallyacademy.in/'      // Production
   ],
   credentials: true,                // Cookies/auth
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
